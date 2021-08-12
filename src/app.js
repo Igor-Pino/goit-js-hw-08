@@ -70,43 +70,19 @@ const galleryContainer = document.querySelector('.js-gallery')
 const lightboxImage = document.querySelector('.lightbox__image')
 
 const lightboxEl = document.querySelector('.lightbox')
-const lightbox__buttonEl = document.querySelector('.lightbox__button')
+
+
+
+
+// відкриття модалки і фото в повному розмірі
 
 galleryContainer.addEventListener('click', onGalleryContainerClick)
 
 
-function onGalleryContainerClick(e){
-lightboxEl.classList.add('is-open')
-galleryItems.map(image => {
-  if (e.target.src === image.preview) {
-    lightboxImage.src = image.original
-  }
-})
-
-lightboxImage.classList.add('lightbox__image')
-
-}
-
-
-
-lightbox__buttonEl.addEventListener('click', ()=>{lightboxEl.classList.remove('is-open');
-lightboxImage.src = " ";
-})
-
-window.addEventListener('keydown', (e)=>{
-  if(e.code !=='Escape') {
-    return
-  }
-  lightboxEl.classList.remove('is-open')
-})
-
-
-
-
-
-
+// створення розмітки через createElement
 
 const items = galleryItems.map(image => {
+  
   const createGalleryItem = document.createElement('li')
   createGalleryItem.classList.add('gallery__item')
 
@@ -130,6 +106,52 @@ galleryContainer.append(...items)
 
 
 
+function onGalleryContainerClick(e){
+  if(e.target.classList.contains('gallery__image')) {
+  console.log(e.target)
+  lightboxEl.classList.add('is-open')
+  galleryItems.map(image => {
+    if (e.target.src === image.preview) {
+      lightboxImage.src = image.original
+    }
+  })
+  lightboxImage.classList.add('lightbox__image')
+  addEventListeners()}
+  return
+}
 
+function addEventListeners(){
+    
+    lightboxEl.addEventListener('click', closeModalByClick)
 
+    window.addEventListener('keydown', closeModalByKeydown)
+}
 
+function removeEventListeners () {
+  
+
+    lightboxEl.removeEventListener('click', closeModalByClick)
+
+    window.removeEventListener('keydown', closeModalByKeydown)
+}
+
+function removeActiveClass () {
+  lightboxEl.classList.remove('is-open')
+  lightboxImage.src = " ";
+}
+   
+  
+function closeModalByClick(e) {
+  if(e.target.classList.contains('lightbox__overlay')||e.target.classList.contains('lightbox__button')) {
+     removeActiveClass()
+     removeEventListeners()     
+  }
+}
+  
+function closeModalByKeydown (e) {
+    if(e.code !=='Escape') {
+      return
+    }
+    removeActiveClass() 
+    removeEventListeners()   
+}

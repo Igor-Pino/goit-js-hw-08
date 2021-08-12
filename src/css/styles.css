@@ -26,6 +26,7 @@ body {
 }
 
 .gallery {
+  
   display: grid;
   width: 1200px;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
